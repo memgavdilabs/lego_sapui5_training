@@ -1,0 +1,27 @@
+{
+  "name": "lego_sapui5_training",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "9.3.0",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.0.2",
+    "@cap-js/cds-types": "^0.13.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5",
+    "@cap-js/cds-typer": "^0.36.0",
+    "@sap/cds-dk": "9.3.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds-tsx w"
+  },
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  }
+}
