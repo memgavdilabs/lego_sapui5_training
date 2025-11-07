@@ -22,6 +22,10 @@ export default class Main extends BaseController {
         this._resourceBoundle = this.getResourceBundle() as ResourceBundle
     }
 
+	onAfterRendering(): void | undefined {
+		this.getShoppingCartPath()
+	}
+
 	navToProduct(ev: Event) {
 		const listItem: ListItem = ev.getSource()
 		const prodContext = listItem.getBindingContext()
@@ -97,6 +101,22 @@ export default class Main extends BaseController {
 		return oContext;
 	}
 
+	async getShoppingCartPath(){
+		const resultsContext = this.getModel()
+            .bindContext(`/ShoppingCart`, null, {
+                mode: "OneTime",
+                $filter: "userId eq 'user1'"
+            })
+            .getBoundContext() as Context;
+
+		resultsContext.requestObject().then((resultObj)=> {
+			if(resultObj.length > 0){
+				const cartBtn = this.getView().byId('cartButton') as Button
+				cartBtn.bindElement(`/ShoppingCart(${resultObj[0].ID})`)
+			}
+		})
+		
+	}
 	getMainModel() {
 		return this.getView().getModel() as ODataModel
 	}

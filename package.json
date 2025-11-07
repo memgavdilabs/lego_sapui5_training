@@ -7,15 +7,16 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "9.3.0",
-    "express": "^4"
+    "express": "^4",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^2.0.2",
-    "@cap-js/cds-types": "^0.13.0",
-    "@types/node": "^22.0.0",
-    "typescript": "^5",
     "@cap-js/cds-typer": "^0.36.0",
-    "@sap/cds-dk": "9.3.0"
+    "@cap-js/cds-types": "^0.13.0",
+    "@cap-js/sqlite": "^2.0.2",
+    "@sap/cds-dk": "9.3.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5"
   },
   "scripts": {
     "start": "cds-serve",
