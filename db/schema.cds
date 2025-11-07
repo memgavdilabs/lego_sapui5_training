@@ -9,14 +9,14 @@ entity Products: cuid, managed {
     pieceCount: Integer;
     price: Decimal(9, 2);
     stockAvailable: Integer;
-    averageRating: Decimal(3, 2) @readonly;
+    averageRating: Decimal(3, 2);
     ratings: Association to many Ratings on ratings.product = $self;
 }
 
 entity Ratings: cuid, managed {
     product: Association to Products;
     userId: String(50);
-    rating: Integer @range;
+    rating: Integer @assert.range: [0,5];
     comment: String(100);
 }
 
