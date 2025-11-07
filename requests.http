@@ -10,7 +10,7 @@ Content-Type: application/json
 ###
 
 ###
-GET http://localhost:4004/odata/v4/lego-shop/ShoppingCart?$filter=userId eq 'user1' HTTP/1.1
+GET http://localhost:4004/odata/v4/lego-shop/ShoppingCart?$filter=userId eq 'user1'
 Content-Type: application/json
 
 ###
@@ -26,4 +26,21 @@ Content-Type: application/json
 {
     "shoppingCartId": "047871cc-93c8-41f5-b003-7306260ed850",
     "promoCode": "SUMMER10"
+}
+
+###################################
+
+###
+GET http://localhost:4004/odata/v4/lego-shop/Products('9f1c2b9a-bb3a-4b6b-87f1-42b3e5c87913')?$expand=ratings
+Content-Type: application/json
+
+###
+POST http://localhost:4004/odata/v4/lego-shop/RateProduct
+Content-Type: application/json 
+
+{
+    "productId": "9f1c2b9a-bb3a-4b6b-87f1-42b3e5c87913",
+    "userId": "user3",
+    "rating": 4,
+    "comment": "Great product!"
 }
