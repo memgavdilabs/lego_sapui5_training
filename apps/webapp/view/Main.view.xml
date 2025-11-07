@@ -17,14 +17,20 @@
 		<content>
 			<Table items="{/Products}">
 				<columns>
-					<Column width="40%">
+					<Column width="30%">
 						<Label text="{i18n>productName}" />
 					</Column>
-					<Column width="40%">
+
+					<Column width="30%">
+						<Label text="{i18n>available}" />
+					</Column>
+
+					<Column width="30%">
 						<Label text="{i18n>price}" />
 					</Column>
 
-					<Column width="20%"/>
+
+					<Column width="10%"/>
 				</columns>
 
 				<items>

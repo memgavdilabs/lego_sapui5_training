@@ -49,6 +49,18 @@ export default class Main extends BaseController {
 		const oView = this.getView()
 		const src: Button = ev.getSource()
 		const prodID = src.getBindingContext().getProperty('ID')
+
+		const binding = this.getMainModel().bindContext('/AddToCart(...)')
+		binding.setParameter("productId", prodID)
+		binding.setParameter("userId", 'user1')
+		binding.setParameter("quantity", 1)
+
+		await binding.invoke()
+		const resultObj = await binding.requestObject()
+		console.log(resultObj)
+
+
+		/*
 		this.createEntry('/ShoppingCart', 'AddToShoppinCartGroup', {
 			"productId": prodID,
 			"userId": "user1",
@@ -62,7 +74,7 @@ export default class Main extends BaseController {
             MessageBox.error(this._resourceBoundle.getText('AddToShoppinCartGroup'))
         } else {
 			MessageToast.show(this._resourceBoundle.getText('AddToShoppinCartGroup'));
-		}
+		}*/
 	}
 
 	createEntry(sEntitySet: string, sUpdateGroup: string, oInitialData?: object, modelName? : string): Context {
