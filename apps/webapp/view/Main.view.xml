@@ -1,0 +1,51 @@
+<mvc:View controllerName="com.gavdi.lego_sapui5_training.controller.Main" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" core:require="{
+		formatter: 'com/gavdi/lego_sapui5_training/model/formatter'
+	}">
+
+	<Page title="{i18n>appTitle}" id="page">
+		<headerContent>
+			<Button icon="sap-icon://cart" tooltip="See cart" press="openCartPopover">
+				<customData>
+					<BadgeCustomData key="badge" value="{items/$count}"/>
+				</customData>
+			</Button>
+		</headerContent>
+
+		<content>
+			<Table items="{/Products}">
+				<columns>
+					<Column width="40%">
+						<Label text="{i18n>productName}" />
+					</Column>
+					<Column width="40%">
+						<Label text="{i18n>price}" />
+					</Column>
+
+					<Column width="20%"/>
+				</columns>
+
+				<items>
+					<ColumnListItem vAlign="Middle" type="Navigation" press="navToProduct">
+						<cells>
+							<ObjectIdentifier title="{name}" text="{theme}" />
+
+							<!-- Two different ways of formatting -->
+							<ObjectStatus 
+							text="{= ${stockAvailable} > ${AppConfig>/availabilityTreshold} ? ${i18n>available} : ${i18n>lowAvailable} }" 
+							state="{parts: ['stockAvailable', 'AppConfig>/availabilityTreshold'], formatter: 'formatter.formatAvailabilityStatus'}" />
+
+							<ObjectNumber number="{price}" unit="DKK" />
+
+							<Button text="{i18n>addToCart}" press="addToCart"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+
+			</Table>
+		</content>
+	</Page>
+
+</mvc:View>

@@ -1,0 +1,125 @@
+{
+	"_version": "1.21.0",
+
+	"sap.app": {
+		"id": "com.gavdi.lego_sapui5_training",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "${version}"
+		},
+		"sourceTemplate": {
+			"id": "generator-ui5-ts-app",
+			"version": "1.1.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "/odata/lego-shop/",
+				"type": "OData",
+				"settings": {
+					"annotations": [],
+					"odataVersion": "4.0"
+				}
+			}
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.gavdi.lego_sapui5_training.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+
+		"dependencies": {
+			"minUI5Version": "1.140.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+
+		"handleValidation": true,
+
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.gavdi.lego_sapui5_training.i18n.i18n",
+					"supportedLocales": ["en", "de"],
+					"fallbackLocale": "en",
+					"async": true
+				}
+			},
+			"": {
+				"dataSource": "mainService",
+				"preload": true,
+				"type": "sap.ui.model.odata.v4.ODataModel",
+				"settings": {
+					"synchronizationMode": "None",
+					"operationMode": "Server",
+					"autoExpandSelect": true,
+					"earlyRequests": true
+				}
+			},
+			"AppConfig": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/AppConfig.json"
+			}
+		},
+
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "com.gavdi.lego_sapui5_training.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "main",
+					"target": "main"
+				},
+				{
+					"pattern": "ProductPage/:productID:",
+					"name": "ProductPage",
+					"target": "ProductPage",
+					"id": "ProductPage"
+				}
+			],
+			"targets": {
+				"main": {
+					"id": "main",
+					"name": "Main"
+				},
+				"ProductPage": {
+					"viewId": "ProductPage",
+					"viewName": "ProductPage",
+					"transition": "slide",
+					"id": "ProductPage"
+				}
+			}
+		}
+	}
+}
