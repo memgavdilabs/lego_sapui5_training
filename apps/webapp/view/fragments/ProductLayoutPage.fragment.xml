@@ -1,0 +1,112 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.uxap"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:m="sap.m"
+	xmlns:core="sap.ui.core" controllerName="com.gavdi.lego_sapui5_training.controller.ProductPage" core:require="{
+		formatter: 'com/gavdi/lego_sapui5_training/model/formatter'
+	}" height="100%">
+
+	<ObjectPageLayout id="ProductPageLayout" upperCaseAnchorBar="false">
+		<headerTitle>
+			<ObjectPageHeader objectTitle="{name}">
+			</ObjectPageHeader>
+		</headerTitle>
+
+		<headerContent>
+			<m:Text text="{description}"/>
+		</headerContent>
+
+		<sections>
+			<ObjectPageSection titleUppercase="false" title="Information">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
+								<f:content>
+									<m:Label text="{i18n>theme}" />
+									<m:Text text="{theme}" />
+									<m:Label text="{i18n>pieceCount}" />
+									<m:Text text="{pieceCount}" />
+								</f:content>
+							</f:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Inventory">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
+								<f:content>
+									<m:Label text="{i18n>price}" />
+									<m:Text text="{price}" />
+									<m:Label text="{i18n>inventory}" />
+									<m:Text text="{stockAvailable}" />
+								</f:content>
+							</f:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="{i18n>ratings}">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:VBox>
+								<f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
+									<f:content>
+										<m:Label text="{i18n>avgRating}" />
+										<m:Text text="{averageRating}" />
+									</f:content>
+								</f:SimpleForm>
+
+
+								<m:Table items="{path: 'ratings'}">
+									<m:headerToolbar>
+										<m:OverflowToolbar>
+											<m:content>
+												<m:Title text="{i18n>ratings}" level="H2"/>
+												<m:ToolbarSpacer />
+												<m:CheckBox text="{i18n>showUserID}" selected="{AppConfig>/showUserID}"/>
+												<m:Button text="{i18n>addRating}" press="onAddRating" type="Emphasized"/>
+											</m:content>
+										</m:OverflowToolbar>
+									</m:headerToolbar>
+
+									<m:columns>
+										<m:Column >
+											<m:Label text="{i18n>rating}" />
+										</m:Column>
+										<m:Column visible="{AppConfig>/showUserID}">
+											<m:Label text="{i18n>userID}" />
+										</m:Column>
+										<m:Column>
+											<m:Label text="{i18n>comment}" />
+										</m:Column>
+
+									</m:columns>
+
+									<m:items>
+										<m:ColumnListItem vAlign="Middle" press="navToProduct">
+											<m:cells>
+												<m:RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{rating}" />
+												<m:Text text="{userId}"/>
+												<m:Text text="{comment}"/>
+											</m:cells>
+										</m:ColumnListItem>
+									</m:items>
+								</m:Table>
+
+							</m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+		</sections>
+
+	</ObjectPageLayout>
+</core:FragmentDefinition>

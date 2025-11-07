@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Popover placement="Bottom" contentWidth="500px">
+
+        <Table items="{path: 'items', parameters : {$count : true}}">
+            <columns>
+                <Column>
+                    <Label text="Product Name" />
+                </Column>
+                <Column >
+                    <Label text="Price" />
+                </Column>
+
+                <Column />
+            </columns>
+
+            <items>
+                <ColumnListItem vAlign="Middle" type="Navigation" press="navToProduct">
+                    <cells>
+                        <ObjectIdentifier title="{name}" text="{theme}" />
+                        <ObjectNumber number="{price}" unit="DKK" />
+                        <Button type="Reject" icon="sap-icon://delete"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+
+        <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
+            <f:content>
+                <Label text="Total dicount" />
+                <Text text="{totalDiscount}" />
+
+                <Label text="Total price" />
+                <Text text="{totalAmount}" />
+            </f:content>
+        </f:SimpleForm>
+
+    </Popover>
+</core:FragmentDefinition>

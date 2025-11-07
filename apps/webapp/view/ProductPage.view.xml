@@ -1,0 +1,11 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core" controllerName="com.gavdi.lego_sapui5_training.controller.ProductPage" core:require="{
+		formatter: 'com/gavdi/lego_sapui5_training/model/formatter'
+	}" height="100%">
+
+	<Page title="{i18n>appTitle}" id="page" showNavButton="true" navButtonPress="onNavBackPressed">
+	    <core:Fragment fragmentName="com.gavdi.lego_sapui5_training.view.fragments.ProductLayoutPage" type="XML"/>
+	</Page>
+</mvc:View>
