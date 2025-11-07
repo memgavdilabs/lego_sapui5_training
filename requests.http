@@ -16,3 +16,14 @@ Content-Type: application/json
 ###
 DELETE http://localhost:4004/odata/v4/lego-shop/ShoppingCart(0a63c860-5a1c-4b5a-a774-d70ef23e3fcc) HTTP/1.1
 Content-Type: application/json
+
+##################################
+
+###
+POST http://localhost:4004/odata/v4/lego-shop/ApplyPromo
+Content-Type: application/json
+
+{
+    "shoppingCartId": "047871cc-93c8-41f5-b003-7306260ed850",
+    "promoCode": "SUMMER10"
+}
