@@ -29,7 +29,12 @@ export default async function addToCartHandler(req: cds.Request) {
 
     const itemAlreadyAdded = await SELECT.one.from("CartItems").where({ product_ID: productId, cart_ID: cart.ID })
 
-    if (itemAlreadyAdded.length === 0) {
+    if (itemAlreadyAdded && itemAlreadyAdded.length > 0) {
+        const cartItem = itemAlreadyAdded[0]
+        const newQuantity = cartItem.quantity + quantity
+        await UPDATE.entity('CartItems').byKey(cartItem.ID).with({ quantity: newQuantity })
+
+    } else {
         // Add the product to the cart
         await INSERT.into("CartItems").entries({
             cart_ID: cart.ID,
@@ -38,16 +43,12 @@ export default async function addToCartHandler(req: cds.Request) {
             unitPrice: product.price,
             lineTotal: product.price * quantity
         });
-    } else {
-        const cartItem = itemAlreadyAdded[0]
-        const newQuantity = cartItem.quantity + quantity
-        await UPDATE.entity('CartItems').byKey(cartItem.ID).with({quantity : newQuantity})
     }
 
-     // Update the cart total amount
-     const updatedTotal = cart.totalAmount! + (product.price * quantity);
-     await UPDATE("ShoppingCart").set({ totalAmount: updatedTotal }).where({ ID: cart.ID });
+    // Update the cart total amount
+    const updatedTotal = cart.totalAmount! + (product.price * quantity);
+    await UPDATE("ShoppingCart").set({ totalAmount: updatedTotal }).where({ ID: cart.ID });
 
-     return { message: "Product added to cart successfully", cartId: cart.ID };
-     
+    return { message: "Product added to cart successfully", cartId: cart.ID };
+
 }                           

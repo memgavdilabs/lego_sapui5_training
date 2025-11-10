@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core">
     <Popover placement="Bottom" contentWidth="500px">
 
-        <Table items="{path: 'items', parameters : {$count : true}}">
+        <Table items="{path: 'items'}">
             <columns>
                 <Column>
                     <Label text="Product Name" />
@@ -19,8 +19,8 @@
             <items>
                 <ColumnListItem vAlign="Middle" type="Navigation" press="navToProduct">
                     <cells>
-                        <ObjectIdentifier title="{name}" text="{theme}" />
-                        <ObjectNumber number="{price}" unit="DKK" />
+                        <ObjectIdentifier title="{product/name}" text="{product/theme}" />
+                        <ObjectNumber number="{product/price}" unit="DKK" />
                         <Button type="Reject" icon="sap-icon://delete"/>
                     </cells>
                 </ColumnListItem>
@@ -36,6 +36,12 @@
                 <Text text="{totalAmount}" />
             </f:content>
         </f:SimpleForm>
+
+        <HBox alignItems="Center">
+            <Label text="Promo code :" class="sapUiTinyMarginEnd sapUiSmallMarginBegin"/>
+            <Input id="discountCodeInput" value="" class="sapUiTinyMarginEnd"/>
+            <Button text="Submit" press="submitDiscount" type="Emphasized" class="sapUiTinyMarginBeginEnd"/>
+        </HBox>
 
     </Popover>
 </core:FragmentDefinition>

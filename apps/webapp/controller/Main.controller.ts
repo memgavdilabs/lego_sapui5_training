@@ -10,6 +10,8 @@ import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import MessageToast from "sap/m/MessageToast";
 import ResourceBundle from "sap/base/i18n/ResourceBundle";
+import Input from "sap/m/Input";
+import Table from "sap/m/Table";
 
 /**
  * @namespace com.gavdi.lego_sapui5_training.controller
@@ -18,9 +20,9 @@ export default class Main extends BaseController {
 	private _cartPopover: Popover;
 	private _resourceBoundle: ResourceBundle;
 
-	public onInit() {
-        this._resourceBoundle = this.getResourceBundle() as ResourceBundle
-    }
+	public async onInit() {
+		this._resourceBoundle = await this.getResourceBundle() as ResourceBundle
+	}
 
 	onAfterRendering(): void | undefined {
 		this.getShoppingCartPath()
@@ -29,7 +31,7 @@ export default class Main extends BaseController {
 	navToProduct(ev: Event) {
 		const listItem: ListItem = ev.getSource()
 		const prodContext = listItem.getBindingContext()
-		const prodID = prodContext.getProperty('ID')
+		const prodID = prodContext.getProperty('product/ID')
 		this.getRouter().navTo("ProductPage", { productID: prodID })
 	}
 
@@ -46,11 +48,11 @@ export default class Main extends BaseController {
 			oView.addDependent(this._cartPopover);
 		}
 		oView.setBusy(false)
+		src.getElementBinding() && this._cartPopover.bindElement(src.getElementBinding().getPath());
 		this._cartPopover.openBy(src, true)
 	}
 
 	async addToCart(ev: Event) {
-		const oView = this.getView()
 		const src: Button = ev.getSource()
 		const prodID = src.getBindingContext().getProperty('ID')
 
@@ -59,64 +61,69 @@ export default class Main extends BaseController {
 		binding.setParameter("userId", 'user1')
 		binding.setParameter("quantity", 1)
 
-		await binding.invoke()
-		const resultObj = await binding.requestObject()
-		console.log(resultObj)
+		try {
+			await binding.invoke()
+			await binding.requestObject()
+			const cartBtn = this.getView().byId('cartButton') as Button
 
-
-		/*
-		this.createEntry('/ShoppingCart', 'AddToShoppinCartGroup', {
-			"productId": prodID,
-			"userId": "user1",
-			"quantity": 1
-		})
-
-		await this.getMainModel().submitBatch('AddToShoppinCartGroup')
-		// Check if changes have been submitted
-		if (this.getMainModel().hasPendingChanges('AddToShoppinCartGroup')) {
-            oView.setBusy(false)
-            MessageBox.error(this._resourceBoundle.getText('AddToShoppinCartGroup'))
-        } else {
-			MessageToast.show(this._resourceBoundle.getText('AddToShoppinCartGroup'));
-		}*/
+			if (!cartBtn.getElementBinding()) {
+				this.getShoppingCartPath()
+			} else {
+				cartBtn.getElementBinding().refresh()
+			}
+			
+			MessageToast.show(this._resourceBoundle.getText('AddToShoppingCartSuccess'));
+		} catch (error) {
+			MessageBox.error(this._resourceBoundle.getText('AddToShoppingCartSuccess'))
+		}
 	}
 
-	createEntry(sEntitySet: string, sUpdateGroup: string, oInitialData?: object, modelName? : string): Context {
-		let oModel;
-		if(modelName){
-			oModel = this.getModel(modelName)
-		} else {
-			oModel = this.getModel()
-		}
-		const oBinding = oModel.bindList(sEntitySet, undefined, undefined, undefined, {
-			$$updateGroupId: sUpdateGroup,
-		}) as ODataListBinding;
-
-		let oContext: Context;
-		if (oInitialData) {
-			oContext = oBinding.create(oInitialData);
-		} else {
-			oContext = oBinding.create();
-		}
-		return oContext;
-	}
-
-	async getShoppingCartPath(){
+	async getShoppingCartPath() {
 		const resultsContext = this.getModel()
-            .bindContext(`/ShoppingCart`, null, {
-                mode: "OneTime",
-                $filter: "userId eq 'user1'"
-            })
-            .getBoundContext() as Context;
+			.bindContext(`/ShoppingCart`, null, {
+				mode: "OneTime",
+				$filter: "userId eq 'user1'"
+			})
+			.getBoundContext() as Context;
 
-		resultsContext.requestObject().then((resultObj)=> {
-			if(resultObj.length > 0){
+		resultsContext.requestObject().then((resultObj) => {
+			if (resultObj.value.length > 0) {
 				const cartBtn = this.getView().byId('cartButton') as Button
-				cartBtn.bindElement(`/ShoppingCart(${resultObj[0].ID})`)
+				cartBtn.bindElement(`/ShoppingCart(${resultObj.value[0].ID})`)
 			}
 		})
-		
+
 	}
+
+	async submitDiscount() {
+		const discountInput = this.getView().byId('discountCodeInput') as Input
+		const discountCode = discountInput.getValue()
+
+		if(!discountInput.getBindingContext()){
+			MessageBox.error(this._resourceBoundle.getText('addItemsFirstMsg'))
+			return;
+		}
+
+		if(!discountCode){
+			discountInput.setValueState('Error')
+			discountInput.setValueStateText(this._resourceBoundle.getText('fieldEmptyMsg'))
+			return;
+		}
+
+		try {
+			const binding = this.getMainModel().bindContext('/ApplyPromo(...)')
+			binding.setParameter("promoCode", discountCode)
+			binding.setParameter("shoppingCartId", discountInput.getBindingContext().getProperty('ID'))
+			await binding.invoke()
+			await binding.requestObject()
+			discountInput.setValueState('Success');
+			this._cartPopover.getElementBinding().refresh()
+		} catch (error: any) {
+			discountInput.setValueState('Error')
+			discountInput.setValueStateText(error.message)
+		}
+	}
+
 	getMainModel() {
 		return this.getView().getModel() as ODataModel
 	}
