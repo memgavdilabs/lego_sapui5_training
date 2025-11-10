@@ -7,21 +7,20 @@
         <Table items="{path: 'items'}">
             <columns>
                 <Column>
-                    <Label text="Product Name" />
+                    <Label text="{i18n>productName}" />
                 </Column>
                 <Column >
-                    <Label text="Price" />
+                    <Label text="{i18n>price}" />
                 </Column>
 
                 <Column />
             </columns>
 
             <items>
-                <ColumnListItem vAlign="Middle" type="Navigation" press="navToProduct">
+                <ColumnListItem vAlign="Middle" type="Navigation" press="navToProductFromCart">
                     <cells>
                         <ObjectIdentifier title="{product/name}" text="{product/theme}" />
                         <ObjectNumber number="{product/price}" unit="DKK" />
-                        <Button type="Reject" icon="sap-icon://delete"/>
                     </cells>
                 </ColumnListItem>
             </items>
@@ -29,18 +28,18 @@
 
         <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
             <f:content>
-                <Label text="Total dicount" />
+                <Label text="{i18n>totalDiscount}" />
                 <Text text="{totalDiscount}" />
 
-                <Label text="Total price" />
+                <Label text="{i18n>totalPrice}" />
                 <Text text="{totalAmount}" />
             </f:content>
         </f:SimpleForm>
 
         <HBox alignItems="Center">
-            <Label text="Promo code :" class="sapUiTinyMarginEnd sapUiSmallMarginBegin"/>
+            <Label text="{i18n>promoCode}:" class="sapUiTinyMarginEnd sapUiSmallMarginBegin"/>
             <Input id="discountCodeInput" value="" class="sapUiTinyMarginEnd"/>
-            <Button text="Submit" press="submitDiscount" type="Emphasized" class="sapUiTinyMarginBeginEnd"/>
+            <Button text="{i18n>Submit}" press="submitDiscount" type="Emphasized" class="sapUiTinyMarginBeginEnd"/>
         </HBox>
 
     </Popover>

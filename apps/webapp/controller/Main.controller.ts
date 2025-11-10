@@ -31,6 +31,13 @@ export default class Main extends BaseController {
 	navToProduct(ev: Event) {
 		const listItem: ListItem = ev.getSource()
 		const prodContext = listItem.getBindingContext()
+		const prodID = prodContext.getProperty('ID')
+		this.getRouter().navTo("ProductPage", { productID: prodID })
+	}
+
+	navToProductFromCart(ev: Event) {
+		const listItem: ListItem = ev.getSource()
+		const prodContext = listItem.getBindingContext()
 		const prodID = prodContext.getProperty('product/ID')
 		this.getRouter().navTo("ProductPage", { productID: prodID })
 	}
@@ -71,10 +78,10 @@ export default class Main extends BaseController {
 			} else {
 				cartBtn.getElementBinding().refresh()
 			}
-			
+
 			MessageToast.show(this._resourceBoundle.getText('AddToShoppingCartSuccess'));
 		} catch (error) {
-			MessageBox.error(this._resourceBoundle.getText('AddToShoppingCartSuccess'))
+			MessageBox.error(this._resourceBoundle.getText('AddToShoppingCartError'))
 		}
 	}
 

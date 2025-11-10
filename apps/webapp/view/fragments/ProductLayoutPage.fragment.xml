@@ -64,14 +64,14 @@
 								</f:SimpleForm>
 
 
-								<m:Table items="{path: 'ratings'}">
+								<m:Table id="ratingsTable" items="{path: 'ratings'}">
 									<m:headerToolbar>
 										<m:OverflowToolbar>
 											<m:content>
 												<m:Title text="{i18n>ratings}" level="H2"/>
 												<m:ToolbarSpacer />
 												<m:CheckBox text="{i18n>showUserID}" selected="{AppConfig>/showUserID}"/>
-												<m:Button text="{i18n>addRating}" press="onAddRating" type="Emphasized"/>
+												<m:Button text="{i18n>addRating}" press="openAddRatingDialog" type="Emphasized"/>
 											</m:content>
 										</m:OverflowToolbar>
 									</m:headerToolbar>

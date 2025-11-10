@@ -27,23 +27,16 @@ export default async function addToCartHandler(req: cds.Request) {
         cart = await SELECT.one.from("ShoppingCart").where({ ID: productId }) as ShoppingCart;
     }
 
-    const itemAlreadyAdded = await SELECT.one.from("CartItems").where({ product_ID: productId, cart_ID: cart.ID })
 
-    if (itemAlreadyAdded && itemAlreadyAdded.length > 0) {
-        const cartItem = itemAlreadyAdded[0]
-        const newQuantity = cartItem.quantity + quantity
-        await UPDATE.entity('CartItems').byKey(cartItem.ID).with({ quantity: newQuantity })
+    // Add the product to the cart
+    await INSERT.into("CartItems").entries({
+        cart_ID: cart.ID,
+        product_ID: productId,
+        quantity: quantity,
+        unitPrice: product.price,
+        lineTotal: product.price * quantity
+    });
 
-    } else {
-        // Add the product to the cart
-        await INSERT.into("CartItems").entries({
-            cart_ID: cart.ID,
-            product_ID: productId,
-            quantity: quantity,
-            unitPrice: product.price,
-            lineTotal: product.price * quantity
-        });
-    }
 
     // Update the cart total amount
     const updatedTotal = cart.totalAmount! + (product.price * quantity);

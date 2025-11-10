@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+
+    <Dialog title="{i18n>addRating}">
+        <f:SimpleForm layout="ResponsiveGridLayout">
+
+            <Label text="{i18n>rating}" />
+            <RatingIndicator id="ratingRating" />
+
+            <Label text="{i18n>comment}" />
+            <TextArea id="ratingComment" />
+
+        </f:SimpleForm>
+
+        <beginButton>
+            <Button text="{i18n>addRating}" type="Emphasized" press="addRating"/>
+        </beginButton>
+
+        <endButton>
+            <Button text="{i18n>close}" press="closeAddRatingDialog"/>
+
+        </endButton>
+
+    </Dialog>
+
+
+</core:FragmentDefinition>
