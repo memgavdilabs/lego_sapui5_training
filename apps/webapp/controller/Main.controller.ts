@@ -6,12 +6,10 @@ import Context from "sap/ui/model/odata/v4/Context";
 import Button from "sap/m/Button";
 import Popover from "sap/m/Popover";
 import Fragment from "sap/ui/core/Fragment";
-import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import MessageToast from "sap/m/MessageToast";
 import ResourceBundle from "sap/base/i18n/ResourceBundle";
 import Input from "sap/m/Input";
-import Table from "sap/m/Table";
 
 /**
  * @namespace com.gavdi.lego_sapui5_training.controller
@@ -28,6 +26,10 @@ export default class Main extends BaseController {
 		this.getShoppingCartPath()
 	}
 
+	/**
+	 * Navigate to product page when pressed from main page table
+	 * @param ev List item press event
+	 */
 	navToProduct(ev: Event) {
 		const listItem: ListItem = ev.getSource()
 		const prodContext = listItem.getBindingContext()
@@ -35,6 +37,10 @@ export default class Main extends BaseController {
 		this.getRouter().navTo("ProductPage", { productID: prodID })
 	}
 
+	/**
+	 * Navigate to product page when pressed from the cart
+	 * @param ev List item press event
+	 */
 	navToProductFromCart(ev: Event) {
 		const listItem: ListItem = ev.getSource()
 		const prodContext = listItem.getBindingContext()
@@ -42,6 +48,10 @@ export default class Main extends BaseController {
 		this.getRouter().navTo("ProductPage", { productID: prodID })
 	}
 
+	/**
+	 * Open cart popover by the cart button
+	 * @param ev Button press event
+	 */
 	async openCartPopover(ev: Event) {
 		const src: Button = ev.getSource()
 		const oView = this.getView()
@@ -55,10 +65,16 @@ export default class Main extends BaseController {
 			oView.addDependent(this._cartPopover);
 		}
 		oView.setBusy(false)
+
+		// Set the binding to the cart of user1
 		src.getElementBinding() && this._cartPopover.bindElement(src.getElementBinding().getPath());
 		this._cartPopover.openBy(src, true)
 	}
 
+	/**
+	 * Add to cart action call. Calls the backend and returns either success or error
+	 * @param ev Button press event
+	 */
 	async addToCart(ev: Event) {
 		const src: Button = ev.getSource()
 		const prodID = src.getBindingContext().getProperty('ID')
@@ -85,6 +101,9 @@ export default class Main extends BaseController {
 		}
 	}
 
+	/**
+	 * Find the shopping cart path based on user1 user ID
+	 */
 	async getShoppingCartPath() {
 		const resultsContext = this.getModel()
 			.bindContext(`/ShoppingCart`, null, {
@@ -94,23 +113,30 @@ export default class Main extends BaseController {
 			.getBoundContext() as Context;
 
 		resultsContext.requestObject().then((resultObj) => {
+			// check if shopping cart has been found (it might have not been created yet)
 			if (resultObj.value.length > 0) {
 				const cartBtn = this.getView().byId('cartButton') as Button
+				// there will be always one shopping cart per user
 				cartBtn.bindElement(`/ShoppingCart(${resultObj.value[0].ID})`)
 			}
 		})
 
 	}
 
+	/**
+	 * Submit discount action call. Calls the backend and returns either success or error
+	 */
 	async submitDiscount() {
 		const discountInput = this.getView().byId('discountCodeInput') as Input
 		const discountCode = discountInput.getValue()
 
+		// Check if shopping cart is bound. If not, then there is nothing to apply discount on
 		if(!discountInput.getBindingContext()){
 			MessageBox.error(this._resourceBoundle.getText('addItemsFirstMsg'))
 			return;
 		}
 
+		// Check if user has input a discount code
 		if(!discountCode){
 			discountInput.setValueState('Error')
 			discountInput.setValueStateText(this._resourceBoundle.getText('fieldEmptyMsg'))
@@ -131,6 +157,11 @@ export default class Main extends BaseController {
 		}
 	}
 
+	/**
+	 * Simply get function for easier access of main data model
+	 * This way you do not need to specifcy the type (ODataModel) every time
+	 * @returns main model : ODataModel
+	 */
 	getMainModel() {
 		return this.getView().getModel() as ODataModel
 	}

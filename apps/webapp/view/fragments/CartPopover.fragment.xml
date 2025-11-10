@@ -4,6 +4,7 @@
     xmlns:core="sap.ui.core">
     <Popover placement="Bottom" contentWidth="500px">
 
+        <!-- Cart Items -->
         <Table items="{path: 'items'}">
             <columns>
                 <Column>
@@ -26,6 +27,7 @@
             </items>
         </Table>
 
+        <!-- Totals -->
         <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
             <f:content>
                 <Label text="{i18n>totalDiscount}" />
@@ -36,6 +38,7 @@
             </f:content>
         </f:SimpleForm>
 
+        <!-- Promo Code -->
         <HBox alignItems="Center">
             <Label text="{i18n>promoCode}:" class="sapUiTinyMarginEnd sapUiSmallMarginBegin"/>
             <Input id="discountCodeInput" value="" class="sapUiTinyMarginEnd"/>

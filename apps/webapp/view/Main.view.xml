@@ -15,6 +15,7 @@
 		</headerContent>
 
 		<content>
+			<!-- Products table with navigation -->
 			<Table items="{/Products}">
 				<columns>
 					<Column width="30%">
@@ -28,7 +29,6 @@
 					<Column width="30%">
 						<Label text="{i18n>price}" />
 					</Column>
-
 
 					<Column width="10%"/>
 				</columns>

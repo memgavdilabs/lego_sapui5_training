@@ -1,21 +1,15 @@
 import BaseController from "./BaseController";
 import Event from "sap/ui/base/Event";
 import ResourceBundle from "sap/base/i18n/ResourceBundle";
-import { Route$MatchedEvent, Route$PatternMatchedEventParameters } from "sap/ui/core/routing/Route";
-import ObjectPageLayout from "sap/uxap/ObjectPageLayout";
+import { Route$MatchedEvent } from "sap/ui/core/routing/Route";
 import History from "sap/ui/core/routing/History";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import Dialog from "sap/m/Dialog";
 import Fragment from "sap/ui/core/Fragment";
-import SimpleForm from "sap/ui/layout/form/SimpleForm";
-import Label from "sap/m/Label";
 import RatingIndicator from "sap/m/RatingIndicator";
 import TextArea from "sap/m/TextArea";
-import Table from "sap/m/Table";
 import MessageToast from "sap/m/MessageToast";
 import MessageBox from "sap/m/MessageBox";
-import Button from "sap/m/Button";
-import { ButtonType } from "sap/m/library";
 
 /**
  * @namespace com.gavdi.lego_sapui5_training.controller
@@ -31,21 +25,32 @@ export default class ProductPage extends BaseController {
 
   public onInit() {
     (this.getResourceBundle() as Promise<ResourceBundle>).then((resourceBoundle) => { this._resourceBoundle = resourceBoundle })
+
+    // Attach pattern matched function when navigation on given route happens
     this.getRouter()
       .getRoute("ProductPage")
       .attachPatternMatched(this.onPatternMatched, this);
   }
 
+  /**
+   * Function called after navigation. That's where the initial binding of the navigation happens
+   * @param event Route$MatchedEvent
+   */
   async onPatternMatched(event: Route$MatchedEvent) {
     const params = event.getParameter('arguments') as ProductPageRouteParams
-    if (params && params.productID) {
+    if (params && params.productID) { // make sure the product ID is there
       const productPageLayout = this.getView().byId('ProductPageLayout')
       productPageLayout.bindElement(`/Products(${params.productID})`)
     }
   }
 
+  /**
+   * Function opening a dialog for adding a new rating
+   */
   async openAddRatingDialog() {
     const oView = this.getView()
+
+    // Reuse the dialog if already created, otherwise create it
     if (!this._addRatingDialog) {
       oView.setBusy(true)
       this._addRatingDialog = (await Fragment.load({
@@ -60,6 +65,9 @@ export default class ProductPage extends BaseController {
     this._addRatingDialog.open()
   }
 
+  /**
+   * Function call that closes the dialog and resets the variables
+   */
   closeAddRatingDialog() {
     const ratingSrc = this.getView().byId('ratingRating') as RatingIndicator
     const ratingCommentSrc = this.getView().byId('ratingComment') as TextArea
@@ -70,6 +78,10 @@ export default class ProductPage extends BaseController {
     this._addRatingDialog.close()
   }
 
+  /** 
+   * Call RateProduct action and output success or error
+   * @param ev Button press event
+   */
   async addRating(ev: Event) {
     const src = this.getView().byId('ProductPageLayout')
     const prodID = src.getBindingContext().getProperty('ID')
@@ -97,6 +109,9 @@ export default class ProductPage extends BaseController {
     this.closeAddRatingDialog()
   }
 
+  /**
+   * Navigate back to the previous page
+   */
   onNavBackPressed() {
     const oHistory = History.getInstance();
     const sPreviousHash = oHistory.getPreviousHash();
