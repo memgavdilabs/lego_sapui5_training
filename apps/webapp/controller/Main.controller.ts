@@ -20,11 +20,11 @@ export default class Main extends BaseController {
 	private _cartPopover: Popover;
 	private _resourceBoundle: ResourceBundle;
 
-	public async onInit() {
-		this._resourceBoundle = await this.getResourceBundle() as ResourceBundle
+	public onInit() {
+		(this.getResourceBundle() as Promise<ResourceBundle>).then((resourceBoundle) => { this._resourceBoundle = resourceBoundle })
 	}
 
-	onAfterRendering(): void | undefined {
+	onAfterRendering() {
 		this.getShoppingCartPath()
 	}
 

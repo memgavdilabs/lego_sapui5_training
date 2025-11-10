@@ -31,9 +31,9 @@ export default abstract class BaseController extends Controller {
 	 * Convenience method for getting the i18n resource bundle of the component.
 	 * @returns {Promise<sap.base.i18n.ResourceBundle>} The i18n resource bundle of the component
 	 */
-	public getResourceBundle(): ResourceBundle {
+	public getResourceBundle(): ResourceBundle | Promise<ResourceBundle> {
 		const oModel = this.getOwnerComponent().getModel("i18n") as ResourceModel;
-		return oModel.getResourceBundle() as ResourceBundle;
+		return oModel.getResourceBundle();
 	}
 
 	/**

@@ -29,8 +29,8 @@ export default class ProductPage extends BaseController {
   private _resourceBoundle: ResourceBundle;
   private _addRatingDialog: Dialog;
 
-  public async onInit() {
-		this._resourceBoundle = await this.getResourceBundle() as ResourceBundle
+  public onInit() {
+    (this.getResourceBundle() as Promise<ResourceBundle>).then((resourceBoundle) => { this._resourceBoundle = resourceBoundle })
     this.getRouter()
       .getRoute("ProductPage")
       .attachPatternMatched(this.onPatternMatched, this);
@@ -48,14 +48,14 @@ export default class ProductPage extends BaseController {
     const oView = this.getView()
     if (!this._addRatingDialog) {
       oView.setBusy(true)
-			this._addRatingDialog = (await Fragment.load({
-				id: oView.getId(),
-				name: "com.gavdi.lego_sapui5_training.view.fragments.AddRatingDialog",
-				controller: this,
-			})) as Dialog;
-			oView.addDependent(this._addRatingDialog);
+      this._addRatingDialog = (await Fragment.load({
+        id: oView.getId(),
+        name: "com.gavdi.lego_sapui5_training.view.fragments.AddRatingDialog",
+        controller: this,
+      })) as Dialog;
+      oView.addDependent(this._addRatingDialog);
     }
-    
+
     oView.setBusy(false)
     this._addRatingDialog.open()
   }
